@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 
 const app = express();
 app.use(bodyParser.json())
-
+app.use(bodyParser.urlencoded({ extended: true }))
 app.engine('handlebars', expressHandlebars({
     defaultLayout: 'main',
 }))
@@ -17,6 +17,12 @@ app.use(express.static(__dirname + '/public'))
 const PORT = process.env.PORT || 3000;
 
 app.get('/', handlers.home)
+
+// handlers for browser-based form submission
+app.get('/newsletter-signup', handlers.newsletterSignup)
+app.post('/newsletter-signup/process', handlers.newsletterSignupProcess)
+app.get('/newsletter-signup/thank-you', handlers.newsletterSignupThankYou)
+
 const TOURS = [
     {
         id: 1, name: 'Худ Ровер', price: 10.99,
