@@ -1,5 +1,6 @@
 const express = require('express');
 const expressHandlebars = require('express-handlebars')
+const handlers = require('./lib/handlers')
 
 const app = express();
 
@@ -23,10 +24,14 @@ app.use((err, req, res, next) => {
     res.render('500')
 });
 
-app.get('/', (req, res) => res.render('home'));
+app.get('/', handlers.home)
 
-app.get('/about', (req, res) => res.render('about'))
+app.get('/about', handlers.about)
 
-app.listen(PORT, () => {
-    console.log(`Express is running at http://localhost:${PORT}`)
-})
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Express is running at http://localhost:${PORT}`)
+    })
+} else {
+    module.exports = app;
+}
